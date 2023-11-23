@@ -1,0 +1,49 @@
+
+import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect("Asia Common HLA database.db")
+cursor = conn.cursor()
+
+
+#df = pd.read_csv('Asia Common HLA database.csv')
+#df.to_sql('Asia Common HLA database', conn, if_exists='replace', index=False)
+#print(df)
+#匯入資料庫用
+
+i = 0
+
+while i == 0: #in range(100):
+
+    key = str(input("請輸入要查詢的 1-2 field HLA 型別, 例如 A24 或 A2401，DRB1型別請加入星號，例如DRB1*01 或 DRB1*0101 "))
+
+#print(cc)
+
+    #DataFrame.drop_duplicates(subset=None, keep='first', inplace=False, ignore_index=False)
+    #subset : column label or sequence of labels, optional
+    #keep : {‘first’, ‘last’, False}, default ‘first’
+    #
+
+    if len(key) <4:
+        df = pd.read_sql("SELECT * FROM 'Asia Common HLA database' WHERE [Field 1] = (?)", conn, params=(key,))
+        print(df)
+
+
+    if len(key) == 5:
+        F1 = str(key[0]+key[1]+key[2])
+        F2 = str(':' + key[3]+key[4])
+        df = pd.read_sql("SELECT * FROM 'Asia Common HLA database' WHERE [Field 1] = (?) AND [Field 2] = (?); ", conn, params=(F1, F2,))
+        print(df)
+
+
+    if len(key) ==7:
+        df = pd.read_sql("SELECT * FROM 'Asia Common HLA database' WHERE [Field 1] = (?)", conn, params=(key,))
+        print(df)
+
+
+    if len(key) ==9:
+        F1 = str(key[0] + key[1] + key[2] + key[3] + key[4] + key[5] + key[6])
+        F2 = str(':' + key[7] + key[8])
+        df = pd.read_sql("SELECT * FROM 'Asia Common HLA database' WHERE [Field 1] = (?) AND [Field 2] = (?); ", conn,
+                         params=(F1, F2,))
+        print(df)
